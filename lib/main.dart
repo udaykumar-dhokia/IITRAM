@@ -1,7 +1,8 @@
 import 'dart:async';
 
-import 'package:cdc_iitram/screens/homepage.dart';
+import 'package:cdc_iitram/auth/options.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(const MyApp());
@@ -37,7 +38,7 @@ class _SplashState extends State<Splash> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => const Homepage(),
+            builder: (context) => const Options(),
           ),
         );
       },
@@ -46,6 +47,37 @@ class _SplashState extends State<Splash> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold();
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Image(
+              image: AssetImage(
+                "lib/assets/logo.png",
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Text(
+              "Career Development Cell",
+              style: GoogleFonts.poppins(
+                textStyle:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+              ),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Text(
+              "IITRAM, Ahmedabad",
+              style: GoogleFonts.poppins(),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
