@@ -1,4 +1,9 @@
+import "dart:developer";
+
 import "package:cdc_iitram/constants/colors.dart";
+import "package:cdc_iitram/screens/homepage.dart";
+import "package:cloud_firestore/cloud_firestore.dart";
+import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/material.dart";
 import "package:google_fonts/google_fonts.dart";
 
@@ -10,15 +15,35 @@ class StudentSingUp extends StatefulWidget {
 }
 
 class _StudentSingUpState extends State<StudentSingUp> {
+  Future<void> SignUp(
+    TextEditingController _email,
+    TextEditingController _password,
+    Map<String, dynamic> data,
+  ) async {
+    try {
+      final credential = FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _email.text,
+        password: _password.text,
+      );
+      User? user = FirebaseAuth.instance.currentUser;
+      final db = FirebaseFirestore.instance;
+      await db.collection("student").doc(user!.email).set(data);
+      Navigator.pushReplacement(context as BuildContext,
+          MaterialPageRoute(builder: (context) => Homepage()));
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
   final _name = TextEditingController();
   final _email = TextEditingController();
   final _password = TextEditingController();
   final _enrollment = TextEditingController();
   final _branch = TextEditingController();
-  // final _year = TextEditingController();
 
   List<String> year = ['1', '2', '3', '4'];
   String? selectedYear;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,20 +77,32 @@ class _StudentSingUpState extends State<StudentSingUp> {
                 ),
               ),
             ),
-            Container(
-              height: 50,
-              width: MediaQuery.of(context).size.width * 0.25,
-              decoration: BoxDecoration(
-                color: primary,
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Center(
-                child: Text(
-                  "Signup",
-                  style: GoogleFonts.poppins(
-                    textStyle: TextStyle(
-                      color: white,
-                      fontWeight: FontWeight.w500,
+            GestureDetector(
+              onTap: () {
+                Map<String, dynamic> data = {
+                  "name": _name.text,
+                  "email": _email.text,
+                  "password": _password.text,
+                  "branch": _branch.text,
+                  "year": selectedYear,
+                };
+                SignUp(_email, _password, data);
+              },
+              child: Container(
+                height: 50,
+                width: MediaQuery.of(context).size.width * 0.25,
+                decoration: BoxDecoration(
+                  color: primary,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Center(
+                  child: Text(
+                    "Signup",
+                    style: GoogleFonts.poppins(
+                      textStyle: TextStyle(
+                        color: white,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ),
@@ -161,32 +198,35 @@ class _StudentSingUpState extends State<StudentSingUp> {
                           height: 15,
                         ),
                         DropdownButtonFormField(
-                            style: GoogleFonts.poppins(
-                              textStyle: TextStyle(color: black),
+                          style: GoogleFonts.poppins(
+                            textStyle: TextStyle(color: black),
+                          ),
+                          hint: Text(
+                            "Year",
+                            style: TextStyle(color: black),
+                          ),
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
                             ),
-                            hint: Text(
-                              "Year",
-                              style: TextStyle(color: black),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
                             ),
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                            ),
-                            items: year.map((String items) {
-                              return DropdownMenuItem(
-                                value: items,
-                                child: Text(items),
-                              );
-                            }).toList(),
-                            onChanged: (value) {
-                              setState(() {
+                          ),
+                          items: year.map((String items) {
+                            return DropdownMenuItem(
+                              value: items,
+                              child: Text(items),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            setState(
+                              () {
                                 selectedYear = value!.toString();
-                              });
-                            })
+                              },
+                            );
+                          },
+                        )
                       ],
                     ),
                   ),

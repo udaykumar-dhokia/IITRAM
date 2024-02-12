@@ -1,10 +1,14 @@
 import 'dart:async';
 
-import 'package:cdc_iitram/auth/options.dart';
+import 'package:cdc_iitram/auth/auth.dart';
+import 'package:cdc_iitram/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
@@ -38,7 +42,7 @@ class _SplashState extends State<Splash> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => const Options(),
+            builder: (context) => const Auth(),
           ),
         );
       },

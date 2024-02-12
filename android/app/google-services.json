@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "681096760219",
+    "project_id": "cdc-iitram",
+    "storage_bucket": "cdc-iitram.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:681096760219:android:2af616970db592aafbef3e",
+        "android_client_info": {
+          "package_name": "com.example.cdc_iitram"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBI5PMcUTHYDPLKQzld70rnU2w-Vnc4s7E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
